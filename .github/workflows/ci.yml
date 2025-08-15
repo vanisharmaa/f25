@@ -1,5 +1,4 @@
 name: CI
-
 on:
   push:
     branches: [develop, main]
@@ -9,12 +8,8 @@ on:
 jobs:
   frontend:
     if: ${{ github.ref_name == 'develop' }}
-    name: Build & Test Auth App (Next.js)
+    name: Build & Test Frontend Apps
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/auth # fixed path
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,15 +19,16 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          # Removed cache-dependency-path to let the action auto-detect
 
       - name: Install dependencies
-        run: npm install
+        run: npm install # installs all workspace dependencies from root
 
-      - name: Lint
-        run: npm run lint --if-present
+      - name: Lint Auth App
+        run: npm --workspace auth run lint
 
-      - name: Build
-        run: npm run build
+      - name: Build Auth App
+        run: npm --workspace auth run build
 
   backend:
     if: ${{ github.ref_name == 'main' }}
@@ -40,8 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: services/auth # fixed path
-
+        working-directory: services/auth
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -57,5 +52,5 @@ jobs:
       - name: Run tests
         run: go test ./...
 
-      - name: Build
+      - name: Build Go binary
         run: go build -o app

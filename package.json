@@ -1,0 +1,19 @@
+{
+  "name": "f25",
+  "version": "1.0.0",
+  "description": "This is a personal project to maintain finances, budgets, goals etc.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vanisharmaa/f25.git"
+  },
+  "author": "Vani Sharma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vanisharmaa/f25/issues"
+  },
+  "homepage": "https://github.com/vanisharmaa/f25#readme"
+}

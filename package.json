@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm-run-all --parallel dev:*",
+    "dev": "npm-run-all --parallel dev:auth dev:backend-auth",
     "dev:auth": "npm --workspace auth run dev",
-    "dev:finance": "npm --workspace finance run dev"
+    "dev:backend-auth": "go run services/auth/main.go"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "workspaces": [
     "apps/auth",
     "apps/finance"
-  ]
+  ],
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
 }

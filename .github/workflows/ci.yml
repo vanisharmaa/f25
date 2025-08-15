@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  frontend:
+    if: ${{ github.ref_name == 'develop' }}
+    name: Build & Test Auth App (Next.js)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/auth # fixed path
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Build
+        run: npm run build
+
+  backend:
+    if: ${{ github.ref_name == 'main' }}
+    name: Build & Test Auth Service (Go)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/auth # fixed path
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Run tests
+        run: go test ./...
+
+      - name: Build
+        run: go build -o app
